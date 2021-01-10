@@ -1,0 +1,12 @@
+
+%symulowanie 
+err_wer=0;
+Ymod=zeros(1,dlugosc_danych);
+Ymod(1:4)=Ywer(1:4);
+for iii=4:dlugosc_danych
+    
+    
+    Ymod(i)=w20+w2*tgh(w10+w1
+    %suma bledu 
+    err_wer=err_wer+(Ymod(i)-Yucz(i))^2;
+end;

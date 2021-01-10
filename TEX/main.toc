@@ -1,0 +1,6 @@
+\contentsline {chapter}{\numberline {1\relax .\enspace }Symulacja procesu}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1\relax .\enspace }Wyznaczyć (metodą analityczną lub symulacyjną) i zamiescić w sprawozdaniu charakterystyke statyczną procesu (zależność y(u)) dla sygnału sterujacego z zakresu umin . . . umax.}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2\relax .\enspace }Przeprowadzić symulację procesu (Matlab) dla sekwencji zmian skokowych sygnału sterujacego z zakresu umin . . . umax. Należy wygenerować dwa zbiory danych (zbiór danych uczacych i weryfikujących), w kazdym zbiorze powinno być co najmniej 2000 probek. Eksperymentalnie dobrać okres zmian sygnału sterującego (np. co 50 kroków). Zamieścić rysunki danych.}{2}{section.1.2}%
+\contentsline {chapter}{\numberline {2\relax .\enspace }Modelowanie procesu}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1\relax .\enspace }Opóźnienie $/tau$ procesu}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2\relax .\enspace }Uczenie serii modeli neuronowych.}{3}{section.2.2}%
