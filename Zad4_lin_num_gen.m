@@ -22,4 +22,4 @@
         Ymod_d=w20+w2*tanh(w10+w1*qk);
         qk=[U_obiekt(k-4) U_obiekt(k-5) Y_obiekt(k-1) Y_obiekt(k-2) ]';
         Ymod=w20+w2*tanh(w10+w1*qk);
-    a2=(Ymod_d-Ymod)/delta_linearyzacji;
+        a2=(Ymod_d-Ymod)/delta_linearyzacji;

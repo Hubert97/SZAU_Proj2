@@ -2,7 +2,7 @@
 close all;
 clear all;
 
-TYP=0;  %% if 1 = NPL . if 0 = GPC
+TYP=1;  %% if 1 = NPL . if 0 = GPC
 
 %load('Z4_Wybranymodel\_blad_2.146_lp_3_.mat')
 %load('Z4_Wybranymodel\_blad_1.2126_lp_3_.mat')
@@ -18,7 +18,7 @@ U_obiekt=zeros(1,dlugosc_danych);
 
 
 %% Parametry regulatora
-N=20;
+N=10;
 Nu=5;
 lambda=1;
 delta_U=0.2;
@@ -60,7 +60,7 @@ if TYP==0
        U_odp_skokowa(5:N+6)=1;
        
        for i=6:N+6
-          Sk(i-4)= W(1)*U_odp_skokowa(i-4) + W(2)*U_odp_skokowa(i-5) + W(3)*Y_odp_skokowa(i-1) + W(4) * Y_odp_skokowa(i-2);
+          Sk(i-4)= W(1)*U_odp_skokowa(i-4) + W(2)*U_odp_skokowa(i-5) - W(3)*Y_odp_skokowa(i-1) - W(4) * Y_odp_skokowa(i-2);
           Y_odp_skokowa(i)=Sk(i-4);
        end;
        plot(Sk);
@@ -138,7 +138,7 @@ if TYP==1
            end;
        end;
        
-       Kk=inv((Mk.'*Mk)+(lambda*eye(Nu,Nu)))*Mk';
+       Kk=inv((Mk.'*Mk)+(lambda*eye(Nu,Nu)))*Mk.';
 
     %% NPL Krok6 Obliczanie dUk
     YzadM=ones(N,1).*Yzad(k);
