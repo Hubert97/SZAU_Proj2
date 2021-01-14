@@ -2,7 +2,7 @@
 close all;
 clear all;
 
-TYP=1;  %% if 1 = NPL . if 0 = GPC
+TYP=0;  %% if 1 = NPL . if 0 = GPC
 
 %load('Z4_Wybranymodel\_blad_2.146_lp_3_.mat')
 %load('Z4_Wybranymodel\_blad_1.2126_lp_3_.mat')
@@ -18,10 +18,10 @@ U_obiekt=zeros(1,dlugosc_danych);
 
 
 %% Parametry regulatora
-N=10;
-Nu=5;
+N=12;
+Nu=8;
 lambda=1;
-delta_U=0.2;
+delta_U=0.1;
 
 
 delta_linearyzacji=10^(-7);
@@ -60,8 +60,8 @@ if TYP==0
        U_odp_skokowa(5:N+6)=1;
        
        for i=6:N+6
-          Sk(i-4)= W(1)*U_odp_skokowa(i-4) + W(2)*U_odp_skokowa(i-5) - W(3)*Y_odp_skokowa(i-1) - W(4) * Y_odp_skokowa(i-2);
-          Y_odp_skokowa(i)=Sk(i-4);
+          Sk(i-5)= W(1)*U_odp_skokowa(i-4) + W(2)*U_odp_skokowa(i-5) - W(3)*Y_odp_skokowa(i-1) - W(4) * Y_odp_skokowa(i-2);
+          Y_odp_skokowa(i)=Sk(i-5);
        end;
        plot(Sk);
 
@@ -121,11 +121,10 @@ if TYP==1
        U_odp_skokowa(6:N+6)=1;
        
        for i=6:N+6
-          Sk(i-4)= b3*U_odp_skokowa(i-4) + b4*U_odp_skokowa(i-5) - a1*Y_odp_skokowa(i-1) - a2 * Y_odp_skokowa(i-2);
+          Sk(i-4)= b3*U_odp_skokowa(i-4) + b4*U_odp_skokowa(i-5) + a1*Y_odp_skokowa(i-1) + a2 * Y_odp_skokowa(i-2);
           Y_odp_skokowa(i)=Sk(i-4);
        end;
-     %  plot(sk);
-     %  break;
+
        Mk=zeros(N,Nu);
        
        for i=1:N
@@ -194,8 +193,11 @@ else
     
     
 end;
+%% Liczenie Blędu
+
+
 end;
-err_wer
+Err=sum((Yzad-Y_obiekt).^2)
 
 
 figure; stairs(Y_obiekt,'b'); hold on; stairs(Yzad,'r'); xlabel('Iteracje'); ylabel('Dane z modelu, Wartosci zadane'); legend('Ymod','Yzad'); title('Weryfikacja modelu OE');
