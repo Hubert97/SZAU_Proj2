@@ -23,5 +23,5 @@
         if i<3
         Ysw2=Y_obiekt(k-3+i);
         else
-        Ysw2=Y0k(i-2);
+        Ysw2=Y0k(i-1);
         end;

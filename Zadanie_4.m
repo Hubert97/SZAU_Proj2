@@ -1,7 +1,12 @@
 %symulowanie 
 close all;
+clear all;
+
+TYP=0;  %% if 1 = NPL . if 0 = GPC
+
 %load('Z4_Wybranymodel\_blad_2.146_lp_3_.mat')
-load('Z4_Wybranymodel\_blad_1.2126_lp_3_.mat')
+%load('Z4_Wybranymodel\_blad_1.2126_lp_3_.mat')
+load('Z4_Wybranymodel\_blad_0.35209_lp_5_.mat')
 
 dlugosc_danych=2500;
 simtime=dlugosc_danych;
@@ -13,10 +18,10 @@ U_obiekt=zeros(1,dlugosc_danych);
 
 
 %% Parametry regulatora
-N=50;
-Nu=2;
-lambda=5;
-delta_U=0.1;
+N=20;
+Nu=5;
+lambda=1;
+delta_U=0.2;
 
 
 delta_linearyzacji=10^(-7);
@@ -40,12 +45,46 @@ Yzad(2400:simtime)=0.023;
 
 
 
-%Najmniejsze_Kwadraty
-
-TYP=1;  %% if 1 = NPL . if 0 = GPC
+% Najmniejsze_Kwadraty
 
 
 
+if TYP==0
+     %% Model Liniowy
+    Najmniejsze_Kwadraty
+
+   %% GPC Odpowiedz skokowa
+    Sk=zeros(1,N);
+       U_odp_skokowa=zeros(1,N+6);
+       Y_odp_skokowa=zeros(1,N+6);
+       U_odp_skokowa(5:N+6)=1;
+       
+       for i=6:N+6
+          Sk(i-4)= W(1)*U_odp_skokowa(i-4) + W(2)*U_odp_skokowa(i-5) + W(3)*Y_odp_skokowa(i-1) + W(4) * Y_odp_skokowa(i-2);
+          Y_odp_skokowa(i)=Sk(i-4);
+       end;
+       plot(Sk);
+
+
+    
+    %% GPC Macierz Dynamiczna
+       M=zeros(N,Nu);
+       
+       for i=1:N
+           for ii=1:Nu
+            tmp_sk=0;
+               if i-ii+1>=1
+                   tmp_sk=Sk(i-ii+1);
+               end;
+           M(i,ii)=tmp_sk;    
+           end;
+       end;
+       
+    MatK=inv((M'*M)+(lambda*eye(Nu,Nu)))*M';
+    
+end
+    
+    
 
 
     
@@ -82,8 +121,8 @@ if TYP==1
        U_odp_skokowa(6:N+6)=1;
        
        for i=6:N+6
-          Sk(i-5)= b3*U_odp_skokowa(i-4) + b4*U_odp_skokowa(i-5) + a1*Y_odp_skokowa(i-1) + a2 * Y_odp_skokowa(i-2);
-          Y_odp_skokowa(i)=Sk(i-5);
+          Sk(i-4)= b3*U_odp_skokowa(i-4) + b4*U_odp_skokowa(i-5) - a1*Y_odp_skokowa(i-1) - a2 * Y_odp_skokowa(i-2);
+          Y_odp_skokowa(i)=Sk(i-4);
        end;
      %  plot(sk);
      %  break;
@@ -99,16 +138,11 @@ if TYP==1
            end;
        end;
        
-       Kk=inv((Mk'*Mk)+(lambda*eye(Nu,Nu)))*Mk';
+       Kk=inv((Mk.'*Mk)+(lambda*eye(Nu,Nu)))*Mk';
 
     %% NPL Krok6 Obliczanie dUk
-    qk=[U_obiekt(k-4) U_obiekt(k-5) Y_obiekt(k-1) Y_obiekt(k-2) ]';
-    Ymod=w20+w2*tanh(w10+w1*qk);
-    if k+N<2500
-    YzadM=Yzad(k:k+N);
-    else
-    YzadM=ones(N,1)*Yzad(k);
-    end;
+    YzadM=ones(N,1).*Yzad(k);
+
     dUkk=Kk*(YzadM-Y0k);
     dUkk=dUkk(1);
     
@@ -127,11 +161,36 @@ if TYP==1
     end;
 else        
         
-    %% GPC
+    %% GPC Krok2 - Obliczenie Bledu
+    ymod=(W(1)*U_obiekt(k-4) + W(2)*U_obiekt(k-5) + W(3)*Y_obiekt(k-1) + W(4) * Y_obiekt(k-2));
+    d=Y_obiekt(k)- ymod;
+    %% GPC Krok2 - Generacja Trajektorii Swobodnej
     
+        Y0k=zeros(N,1);
+    for i=1:N
+        Zad4_Y0k_gen
+        Ymod = W(1)*Usw1 + W(2)*Usw2 + W(3)*Ysw1 + W(4)*Ysw2;
+        Y0k(i)=d+Ymod;
+    end;
+    %% GPC Krok3 - Obliczanie dUK
+     YzadM=ones(N,1).*Yzad(k);
+
+     dUkk=MatK*(YzadM-Y0k);
+     dUkk=dUkk(1);
     
-    
-    
+    %% Ograniczenia
+    if dUkk>delta_U
+        dUkk=delta_U;
+    elseif dUkk< -delta_U
+        dUkk=-delta_U;
+    end;
+    U_obiekt(k)=dUkk+U_obiekt(k-1);
+    if U_obiekt(k)>1
+        U_obiekt(k)=1;
+    end; 
+    if U_obiekt(k)<-1
+        U_obiekt(k)=-1;
+    end;
     
     
 end;
