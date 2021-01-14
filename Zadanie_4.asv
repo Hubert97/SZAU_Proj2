@@ -1,8 +1,6 @@
 %symulowanie 
 close all;
 %load('Z4_Wybranymodel\_blad_2.146_lp_3_.mat')
-load('Z4_Wybranymodel\_blad_1.2126_lp_3_.mat')
-
 dlugosc_danych=2500;
 simtime=dlugosc_danych;
 err_wer=0;
@@ -13,9 +11,9 @@ U_obiekt=zeros(1,dlugosc_danych);
 
 
 %% Parametry regulatora
-N=50;
+N=18;
 Nu=2;
-lambda=5;
+lambda=2;
 delta_U=0.1;
 
 

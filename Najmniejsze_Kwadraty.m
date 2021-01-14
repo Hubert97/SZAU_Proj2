@@ -40,7 +40,7 @@ figure(1);
 
  legend("dane ucz¹ce","dane z modelu");
  hold off
- buf='Z2B Stopien=';
+ buf='Z2B_Ucz_Stopien=';
 % buf=[buf mat2str(Stopien) ' ucz'];
  %print(buf,'-dpng','-r500');
  
@@ -62,7 +62,7 @@ figure(2);
 
  plot(yp);
  legend("dane weryfikujace","wyjscie modelu")
-  buf='Z2B Stopien=';
+  buf='Z2B_wer_Stopien=';
  buf=[buf mat2str(Stopien) ' wer'];
  print(buf,'-dpng','-r500');
  

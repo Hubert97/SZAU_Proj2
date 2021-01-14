@@ -145,12 +145,11 @@ end;
 yp=yp';
 figure(2);
 %close();
-plot(Yucz);
+plot(Ywer);
 
  hold on
- plot(Ywer);
  plot(yp);
- legend("dane ucz¹ce","dane weryfikujace","wyjscie modelu")
+ legend("dane weryfikujace","wyjscie modelu")
   buf='Z2B Stopien=';
  buf=[buf mat2str(Stopien) ' wer'];
  print(buf,'-dpng','-r500');
